@@ -1,4 +1,5 @@
-var request = require('request')
+//var request = require('request')
+var fetch = require('isomorphic-fetch');
 var Bluebird = require('bluebird')
 
 var requestBuilder = require('./requestBuilder.js')
@@ -11,50 +12,31 @@ var Darwin = function (apiKey, options) {
 }
 
 Darwin.prototype.thenablePOST = function (xml) {
-  var xmlWithToken = xml.replace('$$TOKEN$$', this.key)
-  return new Bluebird(function (resolve, reject) {
-    request.post({
-      url: baseUrl,
-      headers: {
-        'content-type': 'text/xml'
-      },
-      body: xmlWithToken
-    }, function (err, response, body) {
-      if (err) {
-        console.log(err)
-        reject(err)
-      } else if (response.statusCode > 300) {
-        reject(response)
-      } else {
-        resolve(body)
-      }
-    })
-  })
+  var xmlWithToken = xml.replace('$$TOKEN$$', this.key);
+  return fetch(baseUrl, {
+    method: 'POST',
+    headers: {
+      'content-type': 'text/xml'
+    },
+    body: xmlWithToken
+  }).then(function(response){
+    return response.text();
+  });
 }
 
-function thenableGET (url) {
-  return new Bluebird(function (resolve, reject) {
-    request.get({
-      url: url
-    }, function (err, response, body) {
-      if (err) {
-        reject(err)
-      } else if (response.statusCode > 300) {
-        reject(response)
-      } else {
-        resolve(body)
-      }
-    })
-  })
+function thenableGET(url) {
+  return fetch(url).then(function(response){
+    return response.text();
+  });
 }
 
 Darwin.prototype.getDepartureBoard = function (station, options, callback) {
   var requestXML = requestBuilder.getDepartureBoardRequest(station, options)
   this.thenablePOST(requestXML).then(function (result) {
-    callback(null, parser.parseDepartureBoardResponse(result))
-  }).catch(function (err) {
-    callback(err, null)
-  })
+      callback(null, parser.parseDepartureBoardResponse(result))
+    }).catch(function (err) {
+      callback(err, null)
+    })
 }
 
 Darwin.prototype.getDepartureBoardWithDetails = function (station, options, callback) {
