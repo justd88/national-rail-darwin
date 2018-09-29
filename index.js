@@ -1,7 +1,4 @@
-//var request = require('request')
 var fetch = require('isomorphic-fetch');
-var Bluebird = require('bluebird')
-
 var requestBuilder = require('./requestBuilder.js')
 var parser = require('./parsers.js')
 
