@@ -1,4 +1,4 @@
-var fetch = require('isomorphic-fetch');
+var fetch = require('node-fetch');
 var requestBuilder = require('./requestBuilder.js')
 var parser = require('./parsers.js')
 

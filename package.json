@@ -27,8 +27,8 @@
   "homepage": "https://github.com/justd88/national-rail-darwin#readme",
   "dependencies": {
     "commander": "^2.13.0",
-    "isomorphic-fetch": "^2.2.1",
-    "xmldoc": "0.5.1"
+    "node-fetch": "^2.2.0",
+    "xmldoc": "^0.5.1"
   },
   "devDependencies": {
     "assert": "^1.4.1",
