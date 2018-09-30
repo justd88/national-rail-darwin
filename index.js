@@ -1,4 +1,4 @@
-var fetch = require('node-fetch');
+var fetch = require('cross-fetch');
 var requestBuilder = require('./requestBuilder.js')
 var parser = require('./parsers.js')
 
